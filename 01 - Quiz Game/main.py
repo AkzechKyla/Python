@@ -13,4 +13,6 @@ for question in questions_data:
     questions.append(new_question)
 
 quiz = Quiz(questions)
-quiz.test()
+
+while quiz.still_has_questions():
+    quiz.next_question()
