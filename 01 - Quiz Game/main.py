@@ -16,3 +16,5 @@ quiz = Quiz(questions)
 
 while quiz.still_has_questions():
     quiz.next_question()
+
+quiz.show_total_score()
