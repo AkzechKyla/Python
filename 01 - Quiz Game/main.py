@@ -15,6 +15,9 @@ for question in questions_data:
 quiz = Quiz(questions)
 
 while quiz.still_has_questions():
+    quiz.display_question()
+    user_input = input("Your answer: ")
+    quiz.check_answer(user_input)
     quiz.next_question()
 
 quiz.show_total_score()
