@@ -1,4 +1,5 @@
 import requests
+import json
 from bs4 import BeautifulSoup
 
 
@@ -39,10 +40,9 @@ def scrape_snake_species(urls):
     return all_snake_species
 
 
-def save_to_file(data, filename):
+def save_to_JSON(data, filename):
     with open(filename, "w", encoding="utf-8") as file:
-        for name in data:
-            file.write(f"{name}\n")
+        json.dump(data, file, indent=4)
     print(f"Data saved to {filename}")
 
 
@@ -57,6 +57,6 @@ if __name__ == "__main__":
     if snake_species:
         print("\n".join(snake_species))
         print(f"Total: {len(snake_species)}")
-        save_to_file(snake_species, "snake_species.txt")
+        save_to_JSON(snake_species, "snake_species.json")
     else:
         print("No snake were found.")
