@@ -1,4 +1,5 @@
 import json
+import os
 from pyinaturalist import Observation, enable_logging, get_observations
 from rich import print
 
@@ -6,16 +7,32 @@ enable_logging()
 
 
 def save_to_JSON(data, filename):
+    existing_data = []
+
+    # Check if the file exists and is not empty
+    if os.path.exists(filename) and os.path.getsize(filename) > 0:
+        with open(filename, "r", encoding="utf-8") as file:
+            existing_data = json.load(file)
+
+    # Append new data, avoiding duplicates
+    for url in data:
+        if url not in existing_data:
+            existing_data.append(url)
+        else:
+            print(f"URL already exists: {url}")
+
+    # Write the updated list back to the file
     with open(filename, "w", encoding="utf-8") as file:
-        json.dump(data, file, indent=4)
-    print(f"Data saved to {filename}")
+        json.dump(existing_data, file, indent=4)
+
+    print(f"Data successfully added to {filename}")
 
 
 def fetch_observations(taxon_name):
     response = get_observations(
         taxon_name=taxon_name,
         photos=True,
-        page=2,
+        page=1,
         per_page=100,
     )
 
@@ -42,9 +59,13 @@ def fetch_photo_urls(observations):
     return photo_urls
 
 
-taxon_name = "Eranthis hyemalis"
-observations = fetch_observations(taxon_name)
-photo_urls = fetch_photo_urls(observations)
+if __name__ == "__main__":
+    taxon_name = "Passer montanus"
+    observations = fetch_observations(taxon_name)
+    photo_urls = fetch_photo_urls(observations)
 
-filename = f"{taxon_name.lower().replace(' ', '_')}_observations.json"
-save_to_JSON(photo_urls, filename)
+    print(f"Number of observations: {len(observations)}")
+    print(f"Number of photo URLs: {len(photo_urls)}")
+
+    filename = f"{taxon_name.lower().replace(' ', '_')}_photo_urls.json"
+    save_to_JSON(photo_urls, filename)
