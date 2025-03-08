@@ -36,15 +36,29 @@ def save_to_JSON(data, filename):
     print(f"Data successfully added to {filename}")
 
 
-def fetch_observations(taxon_name):
-    response = get_observations(
-        taxon_name=taxon_name,
-        photos=True,
-        page=1,
-        per_page=100,
-    )
+def fetch_all_observations(taxon_name):
+    all_observations = []
+    page = 1
+    per_page = 100  # Maximum allowed per request: 100
 
-    return Observation.from_json_list(response)
+    while True:
+        print(f"Fetching page {page} for {taxon_name}...")
+        response = get_observations(
+            taxon_name=taxon_name,
+            photos=True,
+            page=page,
+            per_page=per_page,
+        )
+        observations = Observation.from_json_list(response)
+
+        if not observations:
+            break
+
+        all_observations.extend(observations)
+        page += 1  # Go to the next page
+        sleep(120)  # Short delay to avoid hitting API rate limits
+
+    return all_observations
 
 
 def modify_image_size(photo_url, former_size, new_size):
@@ -71,7 +85,7 @@ if __name__ == "__main__":
     species_list = read_species_list("snake_species.txt")
 
     for species in species_list:
-        observations = fetch_observations(species)
+        observations = fetch_all_observations(species)
         photo_urls = fetch_photo_urls(observations)
 
         print(f"Number of observations: {len(observations)}")
@@ -79,5 +93,3 @@ if __name__ == "__main__":
 
         filename = f"{species.lower().replace(' ', '_')}_photo_urls.json"
         save_to_JSON(photo_urls, filename)
-
-        sleep(120)  # delay for 2 minutes to avoid rate limiting
