@@ -6,6 +6,13 @@ from rich import print
 enable_logging()
 
 
+# Reads the snake species from a text file and returns a list
+def read_species_list(filename):
+    with open(filename, "r", encoding="utf-8") as file:
+        species_list = [line.strip() for line in file if line.strip()]
+    return species_list
+
+
 def save_to_JSON(data, filename):
     existing_data = []
 
@@ -60,12 +67,14 @@ def fetch_photo_urls(observations):
 
 
 if __name__ == "__main__":
-    taxon_name = "Passer montanus"
-    observations = fetch_observations(taxon_name)
-    photo_urls = fetch_photo_urls(observations)
+    species_list = read_species_list("snake_species.txt")
 
-    print(f"Number of observations: {len(observations)}")
-    print(f"Number of photo URLs: {len(photo_urls)}")
+    for species in species_list:
+        observations = fetch_observations(species)
+        photo_urls = fetch_photo_urls(observations)
 
-    filename = f"{taxon_name.lower().replace(' ', '_')}_photo_urls.json"
-    save_to_JSON(photo_urls, filename)
+        print(f"Number of observations: {len(observations)}")
+        print(f"Number of photo URLs: {len(photo_urls)}")
+
+        filename = f"{species.lower().replace(' ', '_')}_photo_urls.json"
+        save_to_JSON(photo_urls, filename)
