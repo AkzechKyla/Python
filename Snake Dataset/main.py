@@ -2,6 +2,7 @@ import json
 import os
 from pyinaturalist import Observation, enable_logging, get_observations
 from rich import print
+from time import sleep
 
 enable_logging()
 
@@ -78,3 +79,5 @@ if __name__ == "__main__":
 
         filename = f"{species.lower().replace(' ', '_')}_photo_urls.json"
         save_to_JSON(photo_urls, filename)
+
+        sleep(120)  # delay for 2 minutes to avoid rate limiting
