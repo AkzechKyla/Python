@@ -5,8 +5,8 @@ import numpy as np
 
 
 def load_snake_data(directory_path):
-    """Load image source counts for each snake species from JSON files."""
-    counts = {}
+    """Load raw JSON data for each snake species from files."""
+    data_dict = {}
 
     for filename in os.listdir(directory_path):
         if filename.endswith(".json"):
@@ -16,12 +16,19 @@ def load_snake_data(directory_path):
                 data = json.load(file)
 
             snake_species = filename.replace("_photo_urls.json", "")
+            data_dict[snake_species] = data
 
-            # Count occurrences within each file
-            static_count = sum("static.inaturalist" in url for url in data)
-            open_data_count = sum("inaturalist-open-data" in url for url in data)
+    return data_dict
 
-            counts[snake_species] = (static_count, open_data_count)
+
+def count_image_sources_per_species(data_dict):
+    """Count occurrences of 'static.inaturalist' and 'inaturalist-open-data' per snake species."""
+    counts = {}
+
+    for species, urls in data_dict.items():
+        static_count = sum("static.inaturalist" in url for url in urls)
+        open_data_count = sum("inaturalist-open-data" in url for url in urls)
+        counts[species] = (static_count, open_data_count)
 
     return counts
 
@@ -67,5 +74,6 @@ def plot_snake_data(counts):
 
 if __name__ == "__main__":
     directory_path = "../SnakeDataCollection/"
-    counts = load_snake_data(directory_path)
+    raw_data = load_snake_data(directory_path)
+    counts = count_image_sources_per_species(raw_data)
     plot_snake_data(counts)
