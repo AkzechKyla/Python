@@ -3,7 +3,7 @@ def activitySelection(start, finish):
     arr = sorted([(finish[i], start[i]) for i in range(len(start))])
     finishtime = -1
     for f, s in arr:
-        if s > finishtime:
+        if s >= finishtime:
             finishtime = f
             selected_activities.append((s, f))
     return selected_activities
