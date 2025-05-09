@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List, Tuple
+from tabulate import tabulate
 
 # --- Conversion Utilities ---
 
@@ -63,12 +64,23 @@ if __name__ == "__main__":
         ("BSIT 2-1N", "02:00 PM", "04:00 PM"),
     ]
 
+    all_table = [[block, start, end] for block, start, end in schedules]
+    selected_table = activity_selection(schedules)
+
     print("📋 All Lab Time Slot Requests:")
-    for block, start, end in schedules:
-        print(f"{block}: {start} - {end}")
+    print(
+        tabulate(
+            all_table,
+            headers=["Block/Section", "Start Time", "End Time"],
+            tablefmt="grid",
+        )
+    )
 
-    selected = activity_selection(schedules)
-
-    print("\n✅ Selected Non-Overlapping Lab Time Slots:")
-    for block, start, end in activity_selection(schedules):
-        print(f"{block}: {start} - {end}")
+    print("\n✅ Selected Lab Time Slots:")
+    print(
+        tabulate(
+            selected_table,
+            headers=["Block/Section", "Start Time", "End Time"],
+            tablefmt="grid",
+        )
+    )
