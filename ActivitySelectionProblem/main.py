@@ -56,12 +56,12 @@ def activity_selection(
 
 if __name__ == "__main__":
     schedules = [
-        ("BSCS 2-2", "08:00 AM", "10:00 AM"),
+        ("BSIT 1-2", "11:00 AM", "01:00 PM"),
         ("BSIT 1-3", "09:00 AM", "11:00 AM"),
-        ("BSCS 2-5", "10:30 AM", "12:00 PM"),
-        ("BSIS 1-2", "11:00 AM", "01:00 PM"),
-        ("BSCS 3-5", "01:00 PM", "03:00 PM"),
         ("BSIT 2-1N", "02:00 PM", "04:00 PM"),
+        ("BSCS 2-5", "10:30 AM", "12:00 PM"),
+        ("BSCS 3-5", "01:00 PM", "03:00 PM"),
+        ("BSCS 2-2", "08:00 AM", "10:00 AM"),
     ]
 
     all_table = [[block, start, end] for block, start, end in schedules]
