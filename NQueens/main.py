@@ -1,6 +1,6 @@
 from random import randint
 
-N = 8
+N = 4  # Size of the board
 
 
 def configureRandomly(board, state):
@@ -12,10 +12,12 @@ def configureRandomly(board, state):
 def printBoard(board):
     for i in range(N):
         print(*board[i])
+    print()
 
 
 def printState(state):
-    print(*state)
+    print("State:", *state)
+    print()
 
 
 def compareStates(state1, state2):
@@ -142,13 +144,20 @@ def hillClimbing(board, state):
     copyState(neighbourState, state)
     generateBoard(neighbourBoard, neighbourState)
 
+    iteration = 0
     while True:
+        print(f"Iteration {iteration}:")
+        printState(state)
+        printBoard(board)
+
         copyState(state, neighbourState)
         generateBoard(board, state)
 
         getNeighbour(neighbourBoard, neighbourState)
 
         if compareStates(state, neighbourState):
+            print("Final State:")
+            printState(state)
             printBoard(board)
             break
         elif calculateObjective(board, state) == calculateObjective(
@@ -157,10 +166,16 @@ def hillClimbing(board, state):
             neighbourState[randint(0, N - 1)] = randint(0, N - 1)
             generateBoard(neighbourBoard, neighbourState)
 
+        iteration += 1
+
 
 # Driver code
 state = [0] * N
 board = [[0 for _ in range(N)] for _ in range(N)]
 
 configureRandomly(board, state)
+print("Initial Board:")
+printState(state)
+printBoard(board)
+
 hillClimbing(board, state)
