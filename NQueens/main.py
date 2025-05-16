@@ -146,23 +146,26 @@ def hillClimbing(board, state):
 
     iteration = 0
     while True:
-        print(f"Iteration {iteration}:")
-        printState(state)
-        printBoard(board)
-
         copyState(state, neighbourState)
         generateBoard(board, state)
 
+        currentHeuristic = calculateObjective(board, state)
+        print(f"\nIteration {iteration}")
+        print("Board:")
+        printBoard(board)
+        print("State:", state)
+        print("Heuristic (attacking pairs):", currentHeuristic)
+
         getNeighbour(neighbourBoard, neighbourState)
 
+        newHeuristic = calculateObjective(neighbourBoard, neighbourState)
         if compareStates(state, neighbourState):
-            print("Final State:")
-            printState(state)
+            print("\nFinal Board (Local Minima or Solution):")
             printBoard(board)
+            print("Final State:", state)
+            print("Final Heuristic:", currentHeuristic)
             break
-        elif calculateObjective(board, state) == calculateObjective(
-            neighbourBoard, neighbourState
-        ):
+        elif currentHeuristic == newHeuristic:
             neighbourState[randint(0, N - 1)] = randint(0, N - 1)
             generateBoard(neighbourBoard, neighbourState)
 
