@@ -172,13 +172,13 @@ def hillClimbing(board, state):
         iteration += 1
 
 
-# Driver code
-state = [0] * N
-board = [[0 for _ in range(N)] for _ in range(N)]
+if __name__ == "__main__":
+    state = [0] * N
+    board = [[0 for _ in range(N)] for _ in range(N)]
 
-configureRandomly(board, state)
-print("Initial Board:")
-printState(state)
-printBoard(board)
+    configureRandomly(board, state)
+    print("Initial Board:")
+    printState(state)
+    printBoard(board)
 
-hillClimbing(board, state)
+    hillClimbing(board, state)
