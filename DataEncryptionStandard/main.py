@@ -28,6 +28,10 @@ def permute_choice_1(bin_str):
     # Permute the binary string according to PC-1
     return "".join(bin_str[i - 1] for i in permuted_choice_1)
 
+def left_shift(key_half, shifts):
+    # Perform left shift on the key half
+    return key_half[shifts:] + key_half[:shifts]
+
 
 print("Input Values:")
 print("M = ", M)
@@ -46,7 +50,17 @@ pc1_key = permute_choice_1(K_bin)
 print("K += ", pc1_key)
 
 print("Step 2: Split the 56-bit key into two 28-bit halves, C0 and D0")
-left_half = pc1_key[:28]
-right_half = pc1_key[28:]
-print("C0 = ", left_half)
-print("D0 = ", right_half)
+c0 = pc1_key[:28]
+d0 = pc1_key[28:]
+print("C0 = ", c0)
+print("D0 = ", d0)
+
+print("Step 3: Create 16 block Cn and Dn (1<=n<=16) using left shift")
+
+for i in range(1, 17):
+    shift = 1 if i in [1, 2, 9, 16] else 2
+    c0 = left_shift(c0, shift)
+    d0 = left_shift(d0, shift)
+    print("C{} = ".format(i), c0)
+    print("D{} = ".format(i), d0)
+    print()
