@@ -1,7 +1,6 @@
 M = "BEADCAFE0A459067"
 K = "FADEDDECAF016692"
 
-# Permuted choice 1 (PC-1)
 permuted_choice_1 = [
     57, 49, 41, 33, 25, 17, 9,
     1, 58, 50, 42, 34, 26, 18,
@@ -11,6 +10,17 @@ permuted_choice_1 = [
     7, 62, 54, 46, 38, 30, 22,
     14, 6, 61, 53, 45, 37, 29,
     21, 13, 5, 28, 20, 12, 4
+]
+
+permuted_choice_2 = [
+    14, 17, 11, 24, 1, 5,
+    3, 28, 15, 6, 21, 10,
+    23, 19, 12, 4, 26, 8,
+    16, 7, 27, 20, 13, 2,
+    41, 52, 31, 37, 47, 55,
+    30, 40, 51, 45, 33, 48,
+    44, 49, 39, 56, 34, 53,
+    46, 42, 50, 36, 29, 32
 ]
 
 
@@ -29,6 +39,11 @@ def permute_choice_1(bin_str):
     return "".join(bin_str[i - 1] for i in permuted_choice_1)
 
 
+def permute_choice_2(bin_str):
+    # Permute the binary string according to PC-2
+    return "".join(bin_str[i - 1] for i in permuted_choice_2)
+
+
 def left_shift(key_half, shifts):
     # Perform left shift on the key half
     return key_half[shifts:] + key_half[:shifts]
@@ -40,18 +55,32 @@ def generate_subkeys(c0, d0):
 
     for i in range(1, 17):
         shift = 1 if i in [1, 2, 9, 16] else 2
-        c = left_shift(c0, shift)
-        d = left_shift(d0, shift)
+        c0 = left_shift(c0, shift)
+        d0 = left_shift(d0, shift)
 
         # Print for visualization
         print("C{} = {}".format(i, c0))
         print("D{} = {}".format(i, d0))
         print()
 
-        c_list.append(c)
-        d_list.append(d)
+        c_list.append(c0)
+        d_list.append(d0)
 
     return c_list, d_list
+
+
+def combine_c_d(c_list, d_list):
+    subkey_list = []
+    for i in range(16):
+        c = c_list[i]
+        d = d_list[i]
+        cd = c + d
+
+        subkey_list.append(cd)
+
+    return subkey_list
+        # subkey = permute_choice_2(cd)
+        # print("K{}: {}".format(i + 1, subkey))
 
 
 print("Input Values:")
@@ -77,3 +106,15 @@ print("D0 = ", d0)
 
 print("\nStep 3: Create 16 block Cn and Dn (1<=n<=16) using left shift")
 c_list, d_list = generate_subkeys(c0, d0)
+
+print("\nStep 4: Combine Cn and Dn, then permute the 56-bit key into a 48-bit key using PC-2")
+combined_keys = combine_c_d(c_list, d_list)
+for i in range(len(combined_keys)):
+    print("C{}D{} = {}".format(i + 1, i + 1, combined_keys[i]))
+
+final_keys = []
+print("\nFinal Keys:")
+for i in range(len(combined_keys)):
+    key = permute_choice_2(combined_keys[i])
+    final_keys.append(key)
+    print("K{} = {}".format(i + 1, key))
