@@ -44,3 +44,9 @@ print()
 print("Step 1: Permute the 64-bit key (K_bin) into a 56-bit key using PC-1")
 pc1_key = permute_choice_1(K_bin)
 print("K += ", pc1_key)
+
+print("Step 2: Split the 56-bit key into two 28-bit halves, C0 and D0")
+left_half = pc1_key[:28]
+right_half = pc1_key[28:]
+print("C0 = ", left_half)
+print("D0 = ", right_half)
