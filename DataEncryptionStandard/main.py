@@ -23,6 +23,17 @@ permuted_choice_2 = [
     46, 42, 50, 36, 29, 32
 ]
 
+initial_perm = [
+    58, 50, 42, 34, 26, 18, 10, 2,
+    60, 52, 44, 36, 28, 20, 12, 4,
+    62, 54, 46, 38, 30, 22, 14, 6,
+    64, 56, 48, 40, 32, 24, 16, 8,
+    57, 49, 41, 33, 25, 17, 9, 1,
+    59, 51, 43, 35, 27, 19, 11, 3,
+    61, 53, 45, 37, 29, 21, 13, 5,
+    63, 55, 47, 39, 31, 23, 15, 7
+]
+
 
 def hex_to_bin(hex_str):
     # Convert hex string to binary string
@@ -42,6 +53,11 @@ def permute_choice_1(bin_str):
 def permute_choice_2(bin_str):
     # Permute the binary string according to PC-2
     return "".join(bin_str[i - 1] for i in permuted_choice_2)
+
+
+def initial_permutation(bin_str):
+    # Perform the initial permutation according to the initial permutation table
+    return "".join(bin_str[i - 1] for i in initial_perm)
 
 
 def left_shift(key_half, shifts):
@@ -79,8 +95,6 @@ def combine_c_d(c_list, d_list):
         subkey_list.append(cd)
 
     return subkey_list
-        # subkey = permute_choice_2(cd)
-        # print("K{}: {}".format(i + 1, subkey))
 
 
 print("Input Values:")
@@ -118,3 +132,19 @@ for i in range(len(combined_keys)):
     key = permute_choice_2(combined_keys[i])
     final_keys.append(key)
     print("K{} = {}".format(i + 1, key))
+
+print("\nSecond Step: Encode each 64-bit block of data")
+
+print("\nStep 1: Convert message M (hexadecimal) to binary")
+M_bin = hex_to_bin(M)
+print("M =", M_bin)
+
+print("\nStep 2: Permute the 64-bit message (M_bin) into a 64-bit message using IP")
+ip = initial_permutation(M_bin)
+print("IP =", ip)
+
+print("\nStep 3: Split the 64-bit message into two 32-bit halves, L0 and R0")
+l0 = ip[:32]
+r0 = ip[32:]
+print("L0 =", l0)
+print("R0 =", r0)
