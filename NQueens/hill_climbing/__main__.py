@@ -146,7 +146,7 @@ def hillClimbing(board, state):
     copyState(neighbourState, state)
     generateBoard(neighbourBoard, neighbourState)
 
-    iteration = 0
+    iteration = 1
     while True:
         copyState(state, neighbourState)
         generateBoard(board, state)
@@ -179,8 +179,4 @@ if __name__ == "__main__":
     board = [[0 for _ in range(N)] for _ in range(N)]
 
     configureRandomly(board, state)
-    print("Initial Board:")
-    printState(state)
-    printBoard(board)
-
     hillClimbing(board, state)
