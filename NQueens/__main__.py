@@ -11,7 +11,9 @@ def configureRandomly(board, state):
 
 def printBoard(board):
     for i in range(N):
-        print(*board[i])
+        for j in range(N):
+            print('Q' if board[i][j] == 1 else '_', end=' ')
+        print()
     print()
 
 
