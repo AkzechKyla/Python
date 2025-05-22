@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Philippine Snake Classification System</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <header class="app-header">
+      <div class="app-branding">
+        <i class="fas fa-snake logo"></i>
+        <div class="app-title">
+          <h1>Philippine Snake Classification System</h1>
+          <span>AI-powered snake identification system</span>
+        </div>
+      </div>
+
+      <div class="app-nav">
+
+        <div class="mode-toggle">
+          <span class="toggle-label">Experiment Mode</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="expertModeToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="upload-section panel">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">
+              <i class="fas fa-camera"></i> Image Upload
+            </h2>
+            <p class="section-subtitle">Upload a clear image of the snake for identification</p>
+          </div>
+        </div>
+
+        <div class="stepper">
+          <div class="step active">
+            <div class="step-number">1</div>
+            <div class="step-label">Upload</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-label">Analyze</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-label">Results</div>
+          </div>
+        </div>
+
+        <div class="drop-area" id="dropArea">
+          <div class="upload-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="upload-text">
+            <h3>Drop image here</h3>
+            <p>or click to browse files from your device</p>
+          </div>
+          <div class="upload-formats">
+            <span class="format-badge">JPEG</span>
+            <span class="format-badge">JPG</span>
+            <span class="format-badge">PNG</span>
+          </div>
+          <input type="file" id="fileInput" accept="image/*" style="display: none" />
+        </div>
+
+        <div class="preview-container" id="previewContainer">
+          <img src="/api/placeholder/400/300" alt="Snake image preview" class="preview-image" id="previewImage" />
+          <div class="preview-controls">
+            <div class="preview-control remove" id="removeImageBtn" title="Remove image">
+              <i class="fas fa-times"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="model-selection" id="modelSelection">
+          <h3>Select Classification Model</h3>
+          <div class="model-options">
+            <div class="model-option selected" data-model="densenet">
+              <div class="model-check">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="model-icon">
+                <i class="fas fa-network-wired"></i>
+              </div>
+              <div class="model-name">DenseNet</div>
+              <div class="model-description">
+                Baseline model
+              </div>
+            </div>
+            <div class="model-option" data-model="attendensenet">
+              <div class="model-check">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="model-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <div class="model-name">AttenDenseNet</div>
+              <div class="model-description">
+                DenseNet with CBAM
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button class="btn btn-primary" id="analyzeBtn" disabled>
+            <span class="analyze-text">
+              <i class="fas fa-search"></i> Classify Snake
+            </span>
+            <span class="spinner-container">
+              <div class="spinner"></div>
+              <span>Analyzing...</span>
+            </span>
+          </button>
+          <button class="btn btn-outline" id="resetBtn">
+            <i class="fas fa-redo"></i> Reset
+          </button>
+        </div>
+      </section>
+
+      <section class="result-section panel">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">
+              <i class="fas fa-clipboard-list"></i> Classification Results
+            </h2>
+          </div>
+        </div>
+
+        <div class="result-content">
+          <div class="result-placeholder" id="resultPlaceholder">
+            <i class="fas fa-search"></i>
+            <p>
+              Upload a snake image on the left panel to see identification results
+            </p>
+          </div>
+
+          <div class="classification-result" id="classificationResult">
+            <div class="species-card venomous">
+              <div class="species-header">
+                <div class="species-icon">
+                  <i class="fas fa-skull-crossbones"></i>
+                </div>
+                <div class="species-name">
+                  <h3>Philippine Cobra</h3>
+                  <p>Naja philippinensis</p>
+                </div>
+                <div class="confidence">98%</div>
+              </div>
+              <div class="species-details">
+                <div class="detail-group">
+                  <span class="detail-label">Venom Type</span>
+                  <span class="detail-value">Neurotoxic</span>
+                </div>
+                <div class="detail-group">
+                  <span class="detail-label">Danger Level</span>
+                  <span class="detail-value">High</span>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="emergency-info">
+              <div class="emergency-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Emergency Response Guide</h3>
+              </div>
+              <div class="emergency-body">
+                <p>
+                  <i class="fas fa-exclamation-circle"></i>
+                  <span><strong>Symptoms:</strong> Paralysis, respiratory difficulty, blurred vision, excessive
+                    salivation, and difficulty swallowing</span>
+                </p>
+                <p>
+                  <i class="fas fa-first-aid"></i>
+                  <span><strong>First Aid:</strong> Keep patient calm and still. Immobilize the affected limb. Remove
+                    jewelry or tight clothing near the bite. Mark the edge of swelling and time. DO NOT cut the wound or
+                    apply a tourniquet.</span>
+                </p>
+                <p>
+                  <i class="fas fa-syringe"></i>
+                  <span><strong>Antivenom:</strong> Polyvalent Cobra Antivenom required - available at major
+                    hospitals</span>
+                </p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+  </section>
+  </main>
+
+  <footer class="footer">
+    <p><strong>Philippine Snake Classification System © 2025 | System Prototype</strong></p>
+
+    <p>
+      This tool is intended as a clinical decision support system only. Always use clinical judgment and follow
+      established protocols.
+    </p>
+  </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // DOM elements
+      const elements = {
+        dropArea: document.getElementById("dropArea"),
+        fileInput: document.getElementById("fileInput"),
+        previewContainer: document.getElementById("previewContainer"),
+        previewImage: document.getElementById("previewImage"),
+        analyzeBtn: document.getElementById("analyzeBtn"),
+        resetBtn: document.getElementById("resetBtn"),
+        removeImageBtn: document.getElementById("removeImageBtn"),
+        resultPlaceholder: document.getElementById("resultPlaceholder"),
+        classificationResult: document.getElementById("classificationResult"),
+        expertModeToggle: document.getElementById("expertModeToggle"),
+        modelSelection: document.getElementById("modelSelection"),
+        modelOptions: document.querySelectorAll(".model-option"),
+        stepper: document.querySelectorAll(".step")
+      };
+
+      // Initialize expert mode
+      let expertMode = false;
+
+      // Event handlers
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      function highlight() {
+        elements.dropArea.classList.add("active");
+      }
+
+      function unhighlight() {
+        elements.dropArea.classList.remove("active");
+      }
+
+      function updateStepperState(step) {
+        elements.stepper.forEach((stepElement, index) => {
+          if (index < step) {
+            stepElement.classList.add("completed");
+            stepElement.classList.remove("active");
+          } else if (index === step) {
+            stepElement.classList.add("active");
+            stepElement.classList.remove("completed");
+          } else {
+            stepElement.classList.remove("active", "completed");
+          }
+        });
+      }
+
+      function handleFiles(files) {
+        if (files.length > 0) {
+          const file = files[0];
+          if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              elements.previewImage.src = e.target.result;
+              elements.previewContainer.classList.add("active");
+              elements.dropArea.style.display = "none";
+              elements.analyzeBtn.disabled = false;
+              updateStepperState(1);
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+      }
+
+      function toggleExpertMode() {
+        expertMode = elements.expertModeToggle.checked;
+        if (expertMode) {
+          elements.modelSelection.classList.add("active");
+        } else {
+          elements.modelSelection.classList.remove("active");
+        }
+      }
+
+      function resetUI() {
+        elements.previewContainer.classList.remove("active");
+        elements.dropArea.style.display = "block";
+        elements.analyzeBtn.disabled = true;
+        elements.fileInput.value = "";
+        elements.classificationResult.classList.remove("active");
+        elements.resultPlaceholder.style.display = "flex";
+        updateStepperState(0);
+        elements.analyzeBtn.classList.remove("analyzing");
+      }
+
+      function analyzeImage() {
+        elements.analyzeBtn.classList.add("analyzing");
+
+        // Simulate loading time
+        setTimeout(() => {
+          elements.resultPlaceholder.style.display = "none";
+          elements.classificationResult.classList.add("active");
+          elements.analyzeBtn.classList.remove("analyzing");
+          updateStepperState(2);
+        }, 2000);
+      }
+
+      // Set up event listeners
+      elements.dropArea.addEventListener("click", () => elements.fileInput.click());
+      elements.fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
+      elements.expertModeToggle.addEventListener("change", toggleExpertMode);
+      elements.resetBtn.addEventListener("click", resetUI);
+      elements.removeImageBtn.addEventListener("click", resetUI);
+      elements.analyzeBtn.addEventListener("click", analyzeImage);
+
+      // Prevent default drag behaviors
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        elements.dropArea.addEventListener(eventName, preventDefaults, false);
+      });
+
+      // Highlight drop area when item is dragged over it
+      ["dragenter", "dragover"].forEach((eventName) => {
+        elements.dropArea.addEventListener(eventName, highlight, false);
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        elements.dropArea.addEventListener(eventName, unhighlight, false);
+      });
+
+      // Handle dropped files
+      elements.dropArea.addEventListener("drop", (e) => handleFiles(e.dataTransfer.files));
+
+      // Model options
+      elements.modelOptions.forEach((option) => {
+        option.addEventListener("click", function () {
+          elements.modelOptions.forEach((opt) => opt.classList.remove("selected"));
+          this.classList.add("selected");
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
