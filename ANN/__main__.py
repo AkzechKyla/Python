@@ -27,8 +27,6 @@ def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_targ
     num_patterns = len(inputs)
 
     if training_type in [1, 2]:  # SGD / Mini-batch SGD
-        print("Start Training ANN - ReLU Activation Function")
-
         while epoch < epoch_target and error > target_error:
             for i in range(num_patterns):
                 input1, input2 = inputs[i]
@@ -56,8 +54,6 @@ def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_targ
                     break
 
     else:  # Batch Gradient Descent
-        print("Start GD Training ANN - ReLU AF")
-
         while error > target_error and epoch < epoch_target:
             error = 0.0
             dw1_total = dw2_total = db_total = 0.0
@@ -95,14 +91,14 @@ def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_targ
 if __name__ == "__main__":
     # Sample training data (each tuple: input1, input2)
     inputs = [
-        (0.5, 1.0),
-        (1.5, 2.0),
-        (1.0, 0.0),
-        (0.0, 1.0)
+        (-1.0, -1.0),
+        (-1.0, 1.0),
+        (1.0, -1.0),
+        (1.0, 1.0)
     ]
 
-    # Corresponding target outputs
-    targets = [1.0, 0.0, 1.0, 0.0]
+    # Corresponding target outputs = NAND gate
+    targets = [1.0, 1.0, 1.0, -1.0]
 
     # Initial weights and bias
     w1_init = random.uniform(-1, 1)
@@ -113,11 +109,11 @@ if __name__ == "__main__":
 
     # Training parameters
     learn_rate = 0.01
-    epoch_target = 1000
+    epoch_target = 10000
     target_error = 0.001
 
     # Type: 1 = SGD, 2 = Mini-batch SGD, 3 = Batch GD
-    training_type = 1
+    training_type = 3
 
     # Train the model
     w1, w2, b1, epochs_done, final_error = train_ann(
@@ -130,4 +126,9 @@ if __name__ == "__main__":
     # Show final results
     print(f"\nTrained in {epochs_done} epochs")
     print(f"Final Weights: W1 = {w1:.4f}, W2 = {w2:.4f}, B1 = {b1:.4f}")
-    print(f"Final Error: {final_error:.6f}")
+    print(f"Final Error: {final_error:.6f}\n")
+
+    # Test Inputs
+    for input1, input2 in inputs:
+        output = execute_pe(input1, w1, input2, w2, b1)
+        print(f"Input: ({input1}, {input2}) → Output: {output:.4f}")
